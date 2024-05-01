@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -224,13 +225,13 @@ Book* deleteBook(Book* root, char isbn[]) {
             return temp;
         }
         Book* temp = root->right;
-        while (temp->left != NULL)
+        while
+
+ (temp->left != NULL)
             temp = temp->left;
         strcpy(root->isbn, temp->isbn);
         strcpy(root->title, temp->title);
-        strcpy(root->author,
-
- temp->author);
+        strcpy(root->author, temp->author);
         strcpy(root->genre, temp->genre);
         root->price = temp->price;
         root->right = deleteBook(root->right, temp->isbn);
@@ -245,14 +246,28 @@ void swap(Book** a, Book** b) {
     *b = temp;
 }
 
-// Function to perform bubble sort on an array of books by title
-void bubbleSortByTitle(Book* books[], int n) {
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (strcmp(books[j]->title, books[j + 1]->title) > 0) {
-                swap(&books[j], &books[j + 1]);
-            }
+// Function to partition the array for quicksort
+int partition(Book* books[], int low, int high) {
+    char* pivot = books[high]->title;
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (strcmp(books[j]->title, pivot) < 0) {
+            i++;
+            swap(&books[i], &books[j]);
         }
+    }
+    swap(&books[i + 1], &books[high]);
+    return i + 1;
+}
+
+// Function to perform quicksort on an array of books by title
+void quickSortByTitle(Book* books[], int low, int high) {
+    if (low < high) {
+        int pi = partition(books, low, high);
+
+        quickSortByTitle(books, low, pi - 1);
+        quickSortByTitle(books, pi + 1, high);
     }
 }
 
@@ -353,9 +368,8 @@ int main() {
                         break;
                 }
                 break;
-           
             case 4:
-                // Sort books by title
+                // Sort books by title using quicksort
                 printf("Sorting books by title...\n");
                 int numBooks = 0;
                 Book* books[100];
@@ -367,7 +381,7 @@ int main() {
                     }
                 }
                 inorderTraversal(root);
-                bubbleSortByTitle(books, numBooks);
+                quickSortByTitle(books, 0, numBooks - 1);
                 printf("Books sorted by title:\n");
                 for (int i = 0; i < numBooks; i++) {
                     displayBook(books[i]);
@@ -375,7 +389,6 @@ int main() {
                 break;
             case 5:
                 printf("Exiting program.");
-
                 break;
             default:
                 printf("Invalid choice. Please try again.\n");
@@ -385,3 +398,5 @@ int main() {
 
     return 0;
 }
+
+
